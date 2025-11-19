@@ -1,57 +1,26 @@
-import js from "@eslint/js";
-import { globalIgnores } from "eslint/config";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginReact from "eslint-plugin-react";
-import globals from "globals";
-import pluginNext from "@next/eslint-plugin-next";
-import { config as baseConfig } from "./base.js";
+import nextPlugin from '@next/eslint-plugin-next';
+import turboPlugin from 'eslint-config-turbo';
+import prettierConfig from 'eslint-config-prettier';
+import { reactConfig } from './react.js';
 
-/**
- * A custom ESLint configuration for libraries that use Next.js.
- *
- * @type {import("eslint").Linter.Config[]}
- * */
-export const nextJsConfig = [
-  ...baseConfig,
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    ".next/**",
-    "out/**",
-    "build/**",
-    "next-env.d.ts",
-  ]),
-  {
-    ...pluginReact.configs.flat.recommended,
-    languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
-      globals: {
-        ...globals.serviceworker,
-      },
+/** @type {import('eslint').Linter.FlatConfig[]} */
+const nextConfig = [
+    ...reactConfig,
+    {
+        // Next.js specific plugins and rules
+        plugins: {
+            '@next/next': nextPlugin,
+            turbo: turboPlugin,
+        },
+        rules: {
+            ...nextPlugin.configs.recommended.rules,
+            ...nextPlugin.configs['core-web-vitals'].rules,
+            ...turboPlugin.rules,
+            '@next/next/no-html-link-for-pages': 'off',
+        },
     },
-  },
-  {
-    plugins: {
-      "@next/next": pluginNext,
-    },
-    rules: {
-      ...pluginNext.configs.recommended.rules,
-      ...pluginNext.configs["core-web-vitals"].rules,
-    },
-  },
-  {
-    plugins: {
-      "react-hooks": pluginReactHooks,
-    },
-    settings: { react: { version: "detect" } },
-    rules: {
-      ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
-    },
-  },
+    // Add Prettier at the very end to override any conflicting rules
+    prettierConfig,
 ];
+
+export { nextConfig };

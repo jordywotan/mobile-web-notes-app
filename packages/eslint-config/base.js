@@ -1,32 +1,48 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
 
-/**
- * A shared ESLint configuration for the repository.
- *
- * @type {import("eslint").Linter.Config[]}
- * */
-export const config = [
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
-  {
-    plugins: {
-      turbo: turboPlugin,
+/** @type {import('eslint').Linter.FlatConfig[]} */
+const baseConfig = [
+    {
+        ignores: [
+            // Global ignores
+            'node_modules/',
+            '.turbo/',
+            'dist/',
+            '.next/',
+            'public/',
+        ],
     },
-    rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+    {
+        // All files
+        languageOptions: {
+            parser: tsParser,
+            parserOptions: {
+                ecmaFeatures: { modules: true },
+                project: true,
+            },
+            globals: {
+                ...globals.node,
+            },
+        },
+        plugins: {
+            '@typescript-eslint': tsPlugin,
+            import: importPlugin,
+            'simple-import-sort': simpleImportSortPlugin,
+        },
+        rules: {
+            'no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
+            'import/first': 'error',
+            'import/newline-after-import': 'error',
+            'import/no-duplicates': 'error',
+        },
     },
-  },
-  {
-    plugins: {
-      onlyWarn,
-    },
-  },
-  {
-    ignores: ["dist/**"],
-  },
 ];
+
+export { baseConfig };
