@@ -2,8 +2,6 @@ import LoginScreen from '@/components/domain/auth/login';
 import RegisterScreen from '@/components/domain/auth/registrer';
 import Heading from '@/components/typography/heading';
 import Paragraph from '@/components/typography/paragraph';
-import Card from '@/components/ui/card';
-import { GradientBackground } from '@/components/ui/gradient';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
