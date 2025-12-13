@@ -4,7 +4,7 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "dev1": "next dev --port 3000",
+        "dev": "next dev --port 3300",
         "build": "next build",
         "start": "next start",
         "lint": "eslint --max-warnings 0",
@@ -12,18 +12,20 @@
     },
     "dependencies": {
         "next": "^16.0.1",
+        "postcss": "^8.5.6",
         "react": "catalog:",
         "react-dom": "^19.2.0"
     },
     "devDependencies": {
-        "@repo/tailwind-config": "workspace:*",
         "@repo/eslint-config": "workspace:*",
+        "@repo/tailwind-config": "workspace:*",
         "@repo/typescript-config": "workspace:*",
         "@types/node": "24.10.1",
         "@types/react": "catalog:",
         "@types/react-dom": "19.2.3",
         "autoprefixer": "^10.4.22",
         "eslint": "catalog:",
+        "tailwindcss": "catalog:",
         "typescript": "catalog:"
     }
 }

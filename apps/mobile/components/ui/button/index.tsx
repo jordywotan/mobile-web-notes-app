@@ -12,10 +12,10 @@ const Button = ({ children, className = '', isLoading = false, disabled, ...prop
     // NativeWind vertaalt 'hover:' en 'focus:' naar 'active:' op het web.
     // De 'pressed:' variant werkt perfect op mobiel.
     const containerClasses = `
-    flex-row w-full items-center justify-center gap-2 rounded-lg h-12
+    flex-row w-full items-center justify-center gap-2 rounded-full h-14
     bg-primary
     text-sm font-bold
-    pressed:bg-primary/90
+    pressed:bg-primary/50
     disabled:bg-gray-400 disabled:opacity-70
   `;
 

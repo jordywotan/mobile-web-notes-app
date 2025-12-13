@@ -22,8 +22,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className="bg-background-dark">{children}</body>
+        <html lang="en" className="h-full">
+            <body className="bg-cover bg-no-repeat bg-gradient-to-br from-[#6a11cb] to-[#2575fc] h-full">
+                {children}
+            </body>
         </html>
     );
 }

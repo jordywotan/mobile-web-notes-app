@@ -7,7 +7,7 @@ interface HeadingProps extends TextProps {
 }
 
 const Heading = ({ level, children, className = '', ...props }: HeadingProps) => {
-    const baseClasses = 'text-text-light dark:text-text-dark tracking-light font-bold leading-tight';
+    const baseClasses = 'text-text-dark tracking-dark font-bold leading-tight';
 
     const sizeClasses = {
         1: 'text-[32px]',

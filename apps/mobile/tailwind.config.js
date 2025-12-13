@@ -7,5 +7,9 @@ module.exports = {
     // Use the shared Tailwind CSS configuration from packages folder
     ...sharedConfig,
 
-    content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+    content: [
+        './app/**/*.{js,ts,jsx,tsx}',
+        './components/**/*.{js,ts,jsx,tsx}',
+        '../../packages/tailwind-config/src/**/*.{js,ts,jsx,tsx}',
+    ],
 };

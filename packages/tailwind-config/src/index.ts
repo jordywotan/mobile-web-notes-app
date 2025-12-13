@@ -6,7 +6,7 @@ const config: Omit<Config, 'content'> = {
     theme: {
         extend: {
             colors: {
-                primary: '#0D6EFD',
+                primary: '#FF6B6B',
                 'background-light': '#F8F9FA',
                 'background-dark': '#101922',
                 'text-light': '#212529',

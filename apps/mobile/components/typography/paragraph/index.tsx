@@ -8,7 +8,7 @@ interface ParagraphProps extends TextProps {
 }
 
 const Paragraph = ({ size = 'base', children, className = '', ...props }: ParagraphProps) => {
-    const baseClasses = 'text-text-light dark:text-text-dark';
+    const baseClasses = 'text-text-dark';
 
     const sizeClasses = {
         sm: 'text-base leading-relaxed', // 14px font, 20px line height

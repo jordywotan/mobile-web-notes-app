@@ -1,10 +1,14 @@
+import AuthGate from '@/components/domain/auth/auth-gate';
 import { AuthProvider, useAuth } from '@/context/providers/AuthProvider';
 import { createMobileClient } from '@repo/appwrite-config/src/client-mobile';
 import { useFonts } from 'expo-font';
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { Account } from 'react-native-appwrite';
 import '../global.css';
+import { GradientBackground } from '@/components/ui/gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const endpoint = process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!;
 const projectId = process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!;
@@ -35,8 +39,18 @@ export default function RootLayout() {
     }
 
     return (
-        <AuthProvider account={account} segments={segments} replace={router.replace}>
-            <Slot />
-        </AuthProvider>
+        <View className="flex-1">
+            <StatusBar />
+
+            <AuthProvider account={account} segments={segments} replace={router.replace}>
+                <AuthGate>
+                    <GradientBackground>
+                        <SafeAreaView className="flex-1 bg-transparent">
+                            <Slot />
+                        </SafeAreaView>
+                    </GradientBackground>
+                </AuthGate>
+            </AuthProvider>
+        </View>
     );
 }

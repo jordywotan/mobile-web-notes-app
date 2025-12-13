@@ -3,6 +3,7 @@ import RegisterScreen from '@/components/domain/auth/registrer';
 import Heading from '@/components/typography/heading';
 import Paragraph from '@/components/typography/paragraph';
 import Card from '@/components/ui/card';
+import { GradientBackground } from '@/components/ui/gradient';
 import React from 'react';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +12,7 @@ export const AuthScreen = () => {
     const [showScreen, setShowScreen] = React.useState('login');
 
     return (
-        <SafeAreaView className="flex-1 bg-background-light">
+        <SafeAreaView className="flex-1 bg-transparent">
             <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
                 <View className="flex-1 justify-center px-4">
                     <Heading level={1} className="text-center mb-4">
@@ -23,13 +24,13 @@ export const AuthScreen = () => {
                             : 'Registreer jezelf om verder te gaan'}
                     </Paragraph>
 
-                    <Card>
+                    <View className="p-6">
                         {showScreen === 'login' ? (
                             <LoginScreen setShowScreen={setShowScreen} />
                         ) : (
                             <RegisterScreen setShowScreen={setShowScreen} />
                         )}
-                    </Card>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </SafeAreaView>
