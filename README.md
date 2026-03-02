@@ -1,135 +1,164 @@
-# Turborepo starter
+# Mobile Web Notes App — Foundation Architecture
 
-This Turborepo starter is maintained by the Turborepo core team.
+Production-ready, schaalbare React Native basis met Expo, TypeScript, NativeWind, Appwrite auth, Expo Router en Zustand.
 
-## Using this example
+## 1) Installatie stappen (CLI)
 
-Run the following command:
+```bash
+# 1. Project scaffolden
+npx create-expo-app@latest mobile-web-notes-app --template blank-typescript
+cd mobile-web-notes-app
 
-```sh
-npx create-turbo@latest
+# 2. Expo/React Native dependencies
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar react-native-reanimated react-native-gesture-handler react-dom react-native-web
+
+# 3. Core app dependencies
+npm install nativewind tailwindcss zustand appwrite axios @react-native-async-storage/async-storage
+
+# 4. Code quality tooling
+npm install -D eslint prettier eslint-config-prettier eslint-plugin-import @typescript-eslint/eslint-plugin @typescript-eslint/parser @eslint/js@9.39.0 globals eslint-import-resolver-typescript
+
+# 5. Start
+npm run start
 ```
 
-## What's inside?
+## 2) Folder structuur
 
-This Turborepo includes the following packages/apps:
+```text
+app/
+  (auth)/
+    _layout.tsx
+    login.tsx
+    register.tsx
+  (tabs)/
+    _layout.tsx
+    index.tsx
+    settings.tsx
+  _layout.tsx
 
-### Apps and Packages
+src/
+  components/
+    ui/
+      AppText.tsx
+      Screen.tsx
+  features/
+    README.md
+  services/
+    appwrite/
+      appwriteClient.ts
+      authService.ts
+    api/
+      apiClient.ts
+  hooks/
+    useAuthStore.ts
+    useUIStore.ts
+  store/
+    authStore.ts
+    uiStore.ts
+    index.ts
+  utils/
+    noop.ts
+  constants/
+    designTokens.ts
+  types/
+    auth.ts
+  lib/
+    index.ts
+  providers/
+    AppProviders.tsx
+    AuthProvider.tsx
+    ThemeProvider.tsx
+  config/
+    env.ts
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+global.css
+babel.config.js
+metro.config.js
+tailwind.config.js
+eslint.config.mjs
+.prettierrc
+.env
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 3) Config highlights
 
+- `package.json`
+  - `main: expo-router/entry`
+  - scripts: `lint`, `typecheck`, `format`, `format:check`
+- `tsconfig.json`
+  - `strict: true`
+  - path aliases: `@/*` -> `src/*`, `@app/*` -> `app/*`
+- `app.json`
+  - `scheme` + `expo-router` plugin
+  - `userInterfaceStyle: automatic`
+- `babel.config.js`
+  - `nativewind/babel` + `react-native-reanimated/plugin`
+- `metro.config.js`
+  - NativeWind integration met `global.css`
+- `tailwind.config.js`
+  - NativeWind preset + design tokens (colors/spacing/typography)
+- `.env`
+  - verplicht aanwezig met lege Appwrite vars:
+    - `EXPO_PUBLIC_APPWRITE_ENDPOINT=`
+    - `EXPO_PUBLIC_APPWRITE_PROJECT_ID=`
+
+## 4) Boilerplate principes in deze setup
+
+- **Auth flow**
+  - Appwrite client + auth service abstractie in `src/services/appwrite/*`
+  - `AuthProvider` beheert bootstrap/login/register/logout
+  - Zustand `authStore` houdt session/user/loading/bootstrapped state bij
+  - Protected routes in `app/_layout.tsx` via `RouteGuard`
+- **State management**
+  - Feature-based stores: `authStore`, `uiStore`
+  - `uiStore` gebruikt persist middleware (AsyncStorage)
+  - Custom selector hooks in `src/hooks/*`
+- **Services layer**
+  - Geen directe API/Appwrite calls in UI
+  - `apiClient` (Axios) met interceptor placeholders
+- **Styling**
+  - NativeWind via utility classes
+  - Design tokens in `src/constants/designTokens.ts`
+
+## 5) Best practices (enterprise-ready)
+
+- Houd business logic uit schermen/components; gebruik services + stores + hooks.
+- Voeg feature modules toe onder `src/features/<feature>` met eigen types, services en UI.
+- Beperk globale state tot client state; server data abstraheren via services en later eventueel query layer.
+- Gebruik selector hooks om onnodige re-renders te vermijden.
+- Valideer env-config bij app startup en fail-fast op kritieke services.
+- Houd lint/typecheck/format in CI als quality gate.
+
+## 6) Later design & features toevoegen
+
+1. Voeg een design system laag toe in `src/components/ui` (Button, Input, Card).
+2. Maak per domein een feature-map onder `src/features`.
+3. Bouw API modules per feature bovenop `apiClient`.
+4. Voeg error boundaries, analytics en monitoring providers toe in `AppProviders`.
+5. Introduceer tests (unit/integration/e2e) per feature en route group.
+
+## Nuttige scripts
+
+```bash
+npm run lint
+npm run typecheck
+npm run format:check
+npm run format
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+## Splash screen customizen
+
+- Vervang deze bestanden met je eigen branding:
+  - `assets/splash/splash-logo-light.png`
+  - `assets/splash/splash-logo-dark.png`
+- Pas achtergrondkleuren aan in `app.json` onder `expo.splash.backgroundColor` en `expo.splash.dark.backgroundColor`.
+- Voor Development Build wijzigingen opnieuw doorvoeren in native app:
+
+```bash
+# iOS
+npm run ios:dev
+
+# Android
+npm run android:dev
 ```
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)

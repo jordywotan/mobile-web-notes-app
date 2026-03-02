@@ -1,5 +1,5 @@
-submodules/
-pnpm-lock.yaml
-*.svg
-/apps/portal-web-app/locales
-/apps/portal-web-app/src/lib/types/i18n/resources.d.ts
+node_modules
+.expo
+dist
+web-build
+package-lock.json
