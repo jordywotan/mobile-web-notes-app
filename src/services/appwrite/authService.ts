@@ -5,6 +5,18 @@ import { appwriteAccount, assertAppwriteConfigured } from './appwriteClient';
 import { isAppwriteConfigured } from '@/config/env';
 import type { AuthSession, AuthUser, SignInPayload, SignUpPayload } from '@/types/auth';
 
+/**
+ * Retrieves the current user session from Appwrite.
+ *
+ * @returns {Promise<AuthSession>} A promise that resolves to the current session object,
+ *                                  or null if Appwrite is not configured or the session is unauthorized.
+ * @throws {AppwriteException} Throws an AppwriteException if an error occurs other than a 401 Unauthorized error.
+ *
+ * @remarks
+ * - Returns null if Appwrite is not configured
+ * - Returns null if a 401 Unauthorized error is encountered (session expired/invalid)
+ * - Re-throws any other errors that occur during the session retrieval
+ */
 async function getCurrentSession(): Promise<AuthSession> {
     if (!isAppwriteConfigured) {
         return null;

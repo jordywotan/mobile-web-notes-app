@@ -7,13 +7,12 @@ import { SettingsHeader } from '@/features/settings/components/SettingsHeader';
 import { SettingsProfile } from '@/features/settings/components/SettingsProfile';
 import { SettingsRow } from '@/features/settings/components/SettingsRow';
 import { SettingsSection } from '@/features/settings/components/SettingsSection';
-import { useResolvedTheme, useThemePreference } from '@/hooks/useUIStore';
+import { useThemePreference } from '@/hooks/useUIStore';
 import { useAuthContext } from '@/providers/AuthProvider';
-import { useUIStore } from '@/store';
+import { useUIStore } from '@/store/uiStore';
 
 export default function SettingsScreen() {
     const themePreference = useThemePreference();
-    const resolvedTheme = useResolvedTheme();
     const cycleTheme = useUIStore((state) => state.cycleTheme);
     const { user, signOut } = useAuthContext();
     const insets = useSafeAreaInsets();
@@ -60,7 +59,7 @@ export default function SettingsScreen() {
                     <Button label="Sign out" variant="primary" onPress={signOut} />
                 </View>
 
-                <Text className="text-ink/30 px-lg text-center text-xs">App version: 1.0.0</Text>
+                <Text className="px-lg text-center text-xs text-ink/30">App version: 1.0.0</Text>
             </ScrollView>
         </View>
     );

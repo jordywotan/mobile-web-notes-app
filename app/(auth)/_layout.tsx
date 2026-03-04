@@ -1,4 +1,4 @@
-import { Redirect, Stack } from 'expo-router';
+import { Redirect, Slot } from 'expo-router';
 
 import { useAuthSession, useAuthStatus } from '@/hooks/useAuthStore';
 
@@ -14,12 +14,5 @@ export default function AuthLayout() {
         return <Redirect href="/(tabs)" />;
     }
 
-    return (
-        <Stack
-            screenOptions={{
-                headerShown: false,
-                animation: 'none',
-            }}
-        />
-    );
+    return <Slot />;
 }

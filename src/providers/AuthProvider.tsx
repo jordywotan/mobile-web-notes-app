@@ -8,7 +8,7 @@ import {
 } from 'react';
 
 import { authService } from '@/services/appwrite/authService';
-import { useAuthStore } from '@/store';
+import { useAuthStore } from '@/store/authStore';
 import type { SignInPayload, SignUpPayload } from '@/types/auth';
 
 type AuthContextValue = {
