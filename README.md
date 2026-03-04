@@ -1,164 +1,209 @@
-# Mobile Web Notes App — Foundation Architecture
+# Mobile Web Notes App
 
-Production-ready, schaalbare React Native basis met Expo, TypeScript, NativeWind, Appwrite auth, Expo Router en Zustand.
+A modern, scalable notes app foundation built with Expo and React Native. This project focuses on a clean architecture, reusable UI primitives, and a production-ready setup for authentication, routing, state management, and native development builds.
 
-## 1) Installatie stappen (CLI)
+This is currently an architecture-first starter, intended to accelerate feature development while staying maintainable as the app grows.
 
-```bash
-# 1. Project scaffolden
-npx create-expo-app@latest mobile-web-notes-app --template blank-typescript
-cd mobile-web-notes-app
+## Features
 
-# 2. Expo/React Native dependencies
-npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar react-native-reanimated react-native-gesture-handler react-dom react-native-web
+### Core Functionality
 
-# 3. Core app dependencies
-npm install nativewind tailwindcss zustand appwrite axios @react-native-async-storage/async-storage
+- Authentication flow scaffold (login/register/logout) with Appwrite
+- Route protection with Expo Router auth and tabs groups
+- Persistent UI preferences (theme mode) with Zustand + AsyncStorage
+- Development build workflow for native iOS and Android
 
-# 4. Code quality tooling
-npm install -D eslint prettier eslint-config-prettier eslint-plugin-import @typescript-eslint/eslint-plugin @typescript-eslint/parser @eslint/js@9.39.0 globals eslint-import-resolver-typescript
+### User Experience
 
-# 5. Start
-npm run start
-```
+- Styled auth and settings screens
+- Theme preference support (`auto`, `light`, `dark`)
+- Status bar styling that updates on tab focus
+- Custom splash assets for light/dark mode
 
-## 2) Folder structuur
+### Technical Features
+
+- Type-safe architecture with strict TypeScript
+- Service layer abstraction for API and auth access
+- Reusable UI components (`Button`, `Card`, `TextField`)
+- Form validation with `react-hook-form`
+
+## Tech Stack
+
+### Mobile / Frontend
+
+- Expo SDK 55
+- React Native 0.83
+- React 19
+- Expo Router
+- NativeWind + Tailwind CSS
+- React Hook Form
+
+### State & Services
+
+- Zustand
+- Appwrite SDK
+- Axios
+- AsyncStorage
+
+### Tooling
+
+- TypeScript
+- ESLint (flat config)
+- Prettier + Tailwind plugin
+- Dev Client (`expo-dev-client`)
+
+## Architecture
+
+### Routing
+
+- `app/(auth)` for unauthenticated screens
+- `app/(tabs)` for authenticated app screens
+- Guards in route layouts to redirect based on session state
+
+### Data & Auth Flow
+
+- UI → hooks/stores/providers → services → Appwrite/API
+- Auth bootstrap handled by `AuthProvider`
+- UI components never call Appwrite directly
+
+### State Management
+
+- `authStore`: session/user/loading/bootstrap state
+- `uiStore`: theme preference + persistence
+
+## Project Structure
 
 ```text
 app/
   (auth)/
-    _layout.tsx
-    login.tsx
-    register.tsx
   (tabs)/
-    _layout.tsx
-    index.tsx
-    settings.tsx
   _layout.tsx
 
 src/
   components/
+    auth/
     ui/
-      AppText.tsx
-      Screen.tsx
-  features/
-    README.md
-  services/
-    appwrite/
-      appwriteClient.ts
-      authService.ts
-    api/
-      apiClient.ts
-  hooks/
-    useAuthStore.ts
-    useUIStore.ts
-  store/
-    authStore.ts
-    uiStore.ts
-    index.ts
-  utils/
-    noop.ts
-  constants/
-    designTokens.ts
-  types/
-    auth.ts
-  lib/
-    index.ts
-  providers/
-    AppProviders.tsx
-    AuthProvider.tsx
-    ThemeProvider.tsx
   config/
-    env.ts
-
-global.css
-babel.config.js
-metro.config.js
-tailwind.config.js
-eslint.config.mjs
-.prettierrc
-.env
+  constants/
+  features/
+  hooks/
+  lib/
+  providers/
+  services/
+    api/
+    appwrite/
+  store/
+  types/
+  utils/
 ```
 
-## 3) Config highlights
+## Getting Started
 
-- `package.json`
-  - `main: expo-router/entry`
-  - scripts: `lint`, `typecheck`, `format`, `format:check`
-- `tsconfig.json`
-  - `strict: true`
-  - path aliases: `@/*` -> `src/*`, `@app/*` -> `app/*`
-- `app.json`
-  - `scheme` + `expo-router` plugin
-  - `userInterfaceStyle: automatic`
-- `babel.config.js`
-  - `nativewind/babel` + `react-native-reanimated/plugin`
-- `metro.config.js`
-  - NativeWind integration met `global.css`
-- `tailwind.config.js`
-  - NativeWind preset + design tokens (colors/spacing/typography)
-- `.env`
-  - verplicht aanwezig met lege Appwrite vars:
-    - `EXPO_PUBLIC_APPWRITE_ENDPOINT=`
-    - `EXPO_PUBLIC_APPWRITE_PROJECT_ID=`
+Running this locally requires a native mobile setup (Xcode and Android SDK) and optional Appwrite credentials.
 
-## 4) Boilerplate principes in deze setup
+### Prerequisites
 
-- **Auth flow**
-  - Appwrite client + auth service abstractie in `src/services/appwrite/*`
-  - `AuthProvider` beheert bootstrap/login/register/logout
-  - Zustand `authStore` houdt session/user/loading/bootstrapped state bij
-  - Protected routes in `app/_layout.tsx` via `RouteGuard`
-- **State management**
-  - Feature-based stores: `authStore`, `uiStore`
-  - `uiStore` gebruikt persist middleware (AsyncStorage)
-  - Custom selector hooks in `src/hooks/*`
-- **Services layer**
-  - Geen directe API/Appwrite calls in UI
-  - `apiClient` (Axios) met interceptor placeholders
-- **Styling**
-  - NativeWind via utility classes
-  - Design tokens in `src/constants/designTokens.ts`
+- Node.js 20+
+- npm 10+
+- Xcode + iOS Simulator (macOS)
+- Android Studio + Android SDK
+- Java 17 (for Android Gradle builds)
 
-## 5) Best practices (enterprise-ready)
+### Installation
 
-- Houd business logic uit schermen/components; gebruik services + stores + hooks.
-- Voeg feature modules toe onder `src/features/<feature>` met eigen types, services en UI.
-- Beperk globale state tot client state; server data abstraheren via services en later eventueel query layer.
-- Gebruik selector hooks om onnodige re-renders te vermijden.
-- Valideer env-config bij app startup en fail-fast op kritieke services.
-- Houd lint/typecheck/format in CI als quality gate.
-
-## 6) Later design & features toevoegen
-
-1. Voeg een design system laag toe in `src/components/ui` (Button, Input, Card).
-2. Maak per domein een feature-map onder `src/features`.
-3. Bouw API modules per feature bovenop `apiClient`.
-4. Voeg error boundaries, analytics en monitoring providers toe in `AppProviders`.
-5. Introduceer tests (unit/integration/e2e) per feature en route group.
-
-## Nuttige scripts
+Clone the repository:
 
 ```bash
-npm run lint
-npm run typecheck
-npm run format:check
-npm run format
+git clone <your-repo-url>
+cd mobile-web-notes-app
 ```
 
-## Splash screen customizen
-
-- Vervang deze bestanden met je eigen branding:
-  - `assets/splash/splash-logo-light.png`
-  - `assets/splash/splash-logo-dark.png`
-- Pas achtergrondkleuren aan in `app.json` onder `expo.splash.backgroundColor` en `expo.splash.dark.backgroundColor`.
-- Voor Development Build wijzigingen opnieuw doorvoeren in native app:
+Install dependencies:
 
 ```bash
-# iOS
+npm install
+```
+
+Create a `.env` file in the project root:
+
+```bash
+EXPO_PUBLIC_APPWRITE_ENDPOINT=
+EXPO_PUBLIC_APPWRITE_PROJECT_ID=
+EXPO_PUBLIC_API_BASE_URL=
+```
+
+### Run the App
+
+Start Metro (dev client):
+
+```bash
+npm run start:dev
+```
+
+Run iOS:
+
+```bash
 npm run ios:dev
+```
 
-# Android
+Run Android:
+
+```bash
 npm run android:dev
 ```
 
+Run both platforms + Metro together:
+
+```bash
+npm run dev:all
+```
+
+## Available Scripts
+
+```bash
+npm run start
+npm run start:dev
+npm run dev:all
+npm run ios:dev
+npm run android:dev
+npm run lint
+npm run typecheck
+npm run format
+npm run format:check
+```
+
+## Configuration Notes
+
+- App config: `app.json`
+- TS paths and strict mode: `tsconfig.json`
+- NativeWind/Tailwind config: `tailwind.config.js`
+- Babel config: `babel.config.js`
+- Metro + global styles: `metro.config.js`, `global.css`
+
+## Splash Customization
+
+Replace these files with your own branding:
+
+- `assets/splash/splash-logo-light.png`
+- `assets/splash/splash-logo-dark.png`
+
+Then rebuild native apps:
+
+```bash
+npm run ios:dev
+npm run android:dev
+```
+
+## TODOs
+
+- Add Husky to have pre-commit hooks
+- Pincode/Biometrics functionality for already logged in users
+- Notes domain modules under `src/features/notes`
+- Per-user settings/profile integration with appwrite backend
+- Automated tests (unit/integration/e2e)
+- CI pipeline with lint + typecheck + formatting gates
+- i18n translations
+- Logo's and other assets clean up
+- Observability with Sentry
+- Unit/e2e tests
+- Use the new middleware file for auth
