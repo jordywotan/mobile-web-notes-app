@@ -8,8 +8,8 @@ type SettingsProfileProps = {
 export function SettingsProfile({ name, email }: SettingsProfileProps) {
     return (
         <View className="mb-sm mt-20 items-center px-lg">
-            <Text className="text-ink font-display text-xl font-bold">{name}</Text>
-            <Text className="text-ink/45 mt-xs text-sm">{email}</Text>
+            <Text className="font-display text-xl font-bold text-ink">{name}</Text>
+            <Text className="mt-xs text-sm text-ink/45">{email}</Text>
         </View>
     );
 }

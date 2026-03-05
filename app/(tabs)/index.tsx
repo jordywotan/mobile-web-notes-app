@@ -12,14 +12,14 @@ export default function HomeScreen() {
     return (
         <SafeAreaView className="flex-1 items-center justify-center bg-background-light px-md dark:bg-background-dark">
             <Card className="max-w-md" variant="subtle">
-                <Text className="text-ink dark:text-surface mb-sm font-display text-xl font-semibold">
+                <Text className="mb-sm font-display text-xl font-semibold text-ink dark:text-surface">
                     App dashboard
                 </Text>
-                <Text className="text-ink/70 dark:text-surface/70 mb-lg text-sm">
+                <Text className="mb-lg text-sm text-ink/70 dark:text-surface/70">
                     When you see this screen, it means you're successfully authenticated.
                 </Text>
 
-                <Text className="text-ink/70 dark:text-surface/70 mb-md text-sm">
+                <Text className="mb-md text-sm text-ink/70 dark:text-surface/70">
                     Current user: {userEmail}
                 </Text>
 

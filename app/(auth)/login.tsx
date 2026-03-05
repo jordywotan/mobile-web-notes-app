@@ -102,7 +102,7 @@ export default function LoginScreen() {
 
                     <Link asChild href="/(auth)/register">
                         <Pressable className="mt-md">
-                            <Text className="text-ink/65 dark:text-surface/65 text-center font-display text-base">
+                            <Text className="text-center font-display text-base text-ink/65 dark:text-surface/65">
                                 Don&apos;t have an account?{' '}
                                 <Text className="font-semibold text-accent">Create one</Text>
                             </Text>

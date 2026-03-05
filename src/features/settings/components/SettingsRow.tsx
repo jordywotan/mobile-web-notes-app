@@ -26,12 +26,12 @@ export function SettingsRow({
             onPress={onPress}
         >
             <Ionicons color="#2f3273" name={icon} size={22} />
-            <Text className="text-ink ml-md flex-1 font-display text-3xl font-medium">{title}</Text>
+            <Text className="ml-md flex-1 font-display text-3xl font-medium text-ink">{title}</Text>
 
             {rightAdornment ??
                 (value ? (
                     <View className="flex-row items-center">
-                        <Text className="text-ink/45 mr-sm text-2xl">{value}</Text>
+                        <Text className="mr-sm text-2xl text-ink/45">{value}</Text>
                         <Ionicons color="#3e4297" name="chevron-forward" size={18} />
                     </View>
                 ) : (

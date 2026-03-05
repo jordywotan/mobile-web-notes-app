@@ -125,7 +125,7 @@ export default function RegisterScreen() {
 
                     <Link asChild href="/(auth)/login">
                         <Pressable className="mt-md">
-                            <Text className="text-ink/65 dark:text-surface/65 text-center font-display text-base">
+                            <Text className="text-center font-display text-base text-ink/65 dark:text-surface/65">
                                 Already have an account?{' '}
                                 <Text className="font-semibold text-accent">Sign in</Text>
                             </Text>

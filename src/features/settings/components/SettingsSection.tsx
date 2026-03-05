@@ -8,10 +8,10 @@ type SettingsSectionProps = PropsWithChildren<{
 export function SettingsSection({ title, children }: SettingsSectionProps) {
     return (
         <>
-            <Text className="text-ink/30 mb-sm mt-lg px-lg text-sm font-semibold tracking-[3px]">
+            <Text className="mb-sm mt-lg px-lg text-sm font-semibold tracking-[3px] text-ink/30">
                 {title}
             </Text>
-            <View className="bg-surface mx-lg overflow-hidden rounded-xl">{children}</View>
+            <View className="mx-lg overflow-hidden rounded-xl bg-surface">{children}</View>
         </>
     );
 }

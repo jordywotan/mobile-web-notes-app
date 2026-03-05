@@ -11,27 +11,27 @@ import { AppProviders } from '@/providers/AppProviders';
 SplashScreen.preventAutoHideAsync().catch(() => null);
 
 function RootContent() {
-  const { isBootstrapped } = useAuthStatus();
+    const { isBootstrapped } = useAuthStatus();
 
-  useEffect(() => {
+    useEffect(() => {
+        if (!isBootstrapped) {
+            return;
+        }
+
+        SplashScreen.hideAsync().catch(() => null);
+    }, [isBootstrapped]);
+
     if (!isBootstrapped) {
-      return;
+        return <AppSplash />;
     }
 
-    SplashScreen.hideAsync().catch(() => null);
-  }, [isBootstrapped]);
-
-  if (!isBootstrapped) {
-    return <AppSplash />;
-  }
-
-  return <Slot />;
+    return <Slot />;
 }
 
 export default function RootLayout() {
-  return (
-    <AppProviders>
-      <RootContent />
-    </AppProviders>
-  );
+    return (
+        <AppProviders>
+            <RootContent />
+        </AppProviders>
+    );
 }

@@ -9,7 +9,7 @@ const cardStyles = tv({
         variant: {
             elevated: 'bg-surface dark:bg-deep',
             subtle: 'bg-surface/80 dark:bg-deep/85',
-            outline: 'border-ink/10 dark:border-surface/10 border bg-transparent',
+            outline: 'border border-ink/10 bg-transparent dark:border-surface/10',
         },
     },
     defaultVariants: {

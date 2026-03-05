@@ -12,7 +12,7 @@ const labelRowStyles = tv({
 });
 
 const labelStyles = tv({
-    base: 'text-ink dark:text-surface ml-1 text-sm font-semibold',
+    base: 'ml-1 text-sm font-semibold text-ink dark:text-surface',
 });
 
 const inputContainerStyles = tv({
@@ -29,7 +29,7 @@ const inputContainerStyles = tv({
 });
 
 const inputStyles = tv({
-    base: 'text-ink dark:text-surface flex-1 py-sm font-display text-base',
+    base: 'flex-1 py-sm font-display text-base text-ink dark:text-surface',
 });
 
 type TextFieldProps = Omit<TextInputProps, 'className'> &

@@ -8,7 +8,7 @@ type AuthHeaderProps = {
     appName?: string;
 };
 
-export function AuthHeader({ title, subtitle, appName = 'AURA NOTES' }: AuthHeaderProps) {
+export function AuthHeader({ title, subtitle, appName = 'Quick Notes App' }: AuthHeaderProps) {
     const insets = useSafeAreaInsets();
 
     return (
@@ -23,10 +23,11 @@ export function AuthHeader({ title, subtitle, appName = 'AURA NOTES' }: AuthHead
                 paddingBottom: 32,
                 borderBottomLeftRadius: 25,
                 borderBottomRightRadius: 25,
+                marginBottom: 48,
             }}
         >
-            <View className="mb-lg flex-row items-center justify-center">
-                <View className="mr-sm h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm">
+            <View className="mb-xl flex-row items-center justify-center gap-7">
+                <View className="h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm">
                     <Image
                         className="h-6 w-6"
                         resizeMode="contain"

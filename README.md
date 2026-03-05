@@ -196,7 +196,6 @@ npm run android:dev
 
 ## TODOs
 
-- Add Husky to have pre-commit hooks
 - Pincode/Biometrics functionality for already logged in users
 - Notes domain modules under `src/features/notes`
 - Per-user settings/profile integration with appwrite backend

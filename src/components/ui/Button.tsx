@@ -9,7 +9,7 @@ const buttonStyles = tv({
         variant: {
             primary: 'bg-ink',
             accent: 'bg-accent',
-            outline: 'border-ink/20 dark:border-surface/20 border bg-transparent',
+            outline: 'border border-ink/20 bg-transparent dark:border-surface/20',
             ghost: 'bg-transparent',
         },
         size: {
