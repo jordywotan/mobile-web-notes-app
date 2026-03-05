@@ -21,9 +21,13 @@ export default function SettingsScreen() {
 
     return (
         <View className="flex-1 bg-background-light">
-            <SettingsHeader topInset={insets.top} />
-
             <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 28 }}>
+                <SettingsHeader
+                    displayName={user?.name ?? undefined}
+                    email={user?.email ?? undefined}
+                    topInset={insets.top}
+                />
+
                 <SettingsProfile email={user?.email} name={user?.name} />
 
                 <SettingsSection title="ACCOUNT">

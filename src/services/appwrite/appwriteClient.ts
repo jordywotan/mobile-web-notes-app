@@ -1,4 +1,4 @@
-import { Account, Client } from 'appwrite';
+import { Account, Avatars, Client } from 'appwrite';
 
 import { env, isAppwriteConfigured } from '@/config/env';
 
@@ -10,6 +10,7 @@ if (isAppwriteConfigured) {
 
 export const appwriteClient = client;
 export const appwriteAccount = new Account(appwriteClient);
+export const appwriteAvatars = new Avatars(appwriteClient);
 
 /**
  * Asserts that the Appwrite configuration is properly set up.

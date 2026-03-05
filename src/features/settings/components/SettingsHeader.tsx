@@ -1,40 +1,33 @@
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+
+import { SettingsAvatarBadge } from './SettingsAvatarBadge';
+import { SettingsHeaderGradient } from './SettingsHeaderGradient';
+
+import { isAppwriteConfigured } from '@/config/env';
+import { appwriteAvatars } from '@/services/appwrite/appwriteClient';
 
 type SettingsHeaderProps = {
     topInset: number;
+    displayName?: string;
+    email?: string;
 };
 
-export function SettingsHeader({ topInset }: SettingsHeaderProps) {
+export function SettingsHeader({ topInset, displayName, email }: SettingsHeaderProps) {
+    const avatarSeed = displayName?.trim() || email?.trim();
+    const avatarUri =
+        isAppwriteConfigured && avatarSeed
+            ? appwriteAvatars.getInitials({
+                  name: avatarSeed,
+                  width: 150,
+                  height: 150,
+                  background: '375B6A',
+              })
+            : null;
+
     return (
         <View>
-            <LinearGradient
-                colors={['#0b0859', '#3e4297']}
-                end={{ x: 0.5, y: 1 }}
-                start={{ x: 0.5, y: 0 }}
-                style={{
-                    width: '100%',
-                    paddingHorizontal: 24,
-                    paddingTop: topInset + 24,
-                    paddingBottom: 32,
-                    borderBottomLeftRadius: 25,
-                    borderBottomRightRadius: 25,
-                    zIndex: 0,
-                }}
-            >
-                <View className="h-20 items-center justify-center pb-10">
-                    <Text className="font-display text-2xl font-semibold text-white">Settings</Text>
-                </View>
-            </LinearGradient>
-
-            <View className="absolute bottom-0 left-1/2 z-50 -mb-14 -translate-x-1/2 items-center">
-                <View className="h-28 w-28 items-center justify-center rounded-full border-4 border-surface bg-surface shadow-sm">
-                    <View className="h-24 w-24 items-center justify-center rounded-full bg-[#375B6A]">
-                        <Ionicons color="#E7EFF3" name="person" size={46} />
-                    </View>
-                </View>
-            </View>
+            <SettingsHeaderGradient topInset={topInset} />
+            <SettingsAvatarBadge avatarUri={avatarUri} />
         </View>
     );
 }
