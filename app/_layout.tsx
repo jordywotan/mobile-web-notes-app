@@ -18,7 +18,6 @@ function RootContent() {
         biometricAvailable,
         biometricEnabled,
         hasSession,
-        isReady,
         phase,
         setupPin,
         unlockWithBiometrics,
@@ -33,7 +32,7 @@ function RootContent() {
         SplashScreen.hideAsync().catch(() => null);
     }, [isBootstrapped]);
 
-    if (!isBootstrapped || !isReady || phase === 'loading') {
+    if (!isBootstrapped || phase === 'loading') {
         return <AppSplash />;
     }
 

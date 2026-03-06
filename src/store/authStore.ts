@@ -27,11 +27,20 @@ const initialState: AuthStoreState = {
     isBootstrapped: false,
 };
 
+// The subset of state cleared on sign-out.
+// isBootstrapped is intentionally excluded — it is a one-time app lifecycle
+// flag that must never reset to false after the initial auth check completes.
+const resetableState = {
+    session: initialState.session,
+    user: initialState.user,
+    isLoading: initialState.isLoading,
+} as const;
+
 export const useAuthStore = create<AuthStore>((set) => ({
     ...initialState,
     setSession: (session) => set({ session }),
     setUser: (user) => set({ user }),
     setIsLoading: (isLoading) => set({ isLoading }),
     setIsBootstrapped: (isBootstrapped) => set({ isBootstrapped }),
-    reset: () => set(initialState),
+    reset: () => set(resetableState),
 }));

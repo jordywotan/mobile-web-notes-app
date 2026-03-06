@@ -5,6 +5,7 @@ import { useAuthSession, useAuthStatus } from '@/hooks/useAuthStore';
 import {
     authenticateWithBiometrics,
     canUseBiometrics,
+    clearLockDataIfFreshInstall,
     getSavedPin,
     isBiometricEnabled,
     savePin,
@@ -47,6 +48,10 @@ export function useAppLock() {
             if (isMounted) {
                 setPhase('loading');
             }
+
+            // Wipe any stale Keychain data left over from a previous install
+            // (iOS keeps Keychain entries after uninstall; AsyncStorage does not).
+            await clearLockDataIfFreshInstall();
 
             const [storedPin, available, enabled] = await Promise.all([
                 getSavedPin(),
@@ -138,7 +143,6 @@ export function useAppLock() {
     }, [biometricAvailable, biometricEnabled]);
 
     return {
-        isReady: isBootstrapped,
         hasSession: Boolean(session),
         phase,
         biometricAvailable,

@@ -1,7 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 const PIN_KEY = 'app-lock-pin';
 const BIOMETRIC_ENABLED_KEY = 'app-lock-biometric-enabled';
+// AsyncStorage is wiped on app uninstall (even on iOS), unlike the Keychain.
+// We store a marker here so we can detect a fresh install and purge stale
+// Keychain data that iOS would otherwise keep across reinstalls.
+const INSTALL_MARKER_KEY = 'app-lock-installed';
 
 type LocalAuthenticationModule = {
     hasHardwareAsync: () => Promise<boolean>;
@@ -28,6 +33,32 @@ function getLocalAuthenticationModule(): LocalAuthenticationModule | null {
         }
 
         return null;
+    }
+}
+
+export async function clearAllLockData(): Promise<void> {
+    await Promise.all([
+        SecureStore.deleteItemAsync(PIN_KEY),
+        SecureStore.deleteItemAsync(BIOMETRIC_ENABLED_KEY),
+    ]);
+}
+
+/**
+ * On iOS, Keychain entries survive app uninstalls. This function detects a
+ * fresh install by checking for an AsyncStorage marker (which IS cleared on
+ * uninstall) and wipes any stale Keychain data when the marker is absent.
+ * Safe to call multiple times — the marker is written on first launch.
+ */
+export async function clearLockDataIfFreshInstall(): Promise<void> {
+    try {
+        const marker = await AsyncStorage.getItem(INSTALL_MARKER_KEY);
+        if (!marker) {
+            await clearAllLockData();
+            await AsyncStorage.setItem(INSTALL_MARKER_KEY, '1');
+        }
+    } catch (error) {
+        // Storage unavailable — not a blocker, proceed normally.
+        console.warn('clearLockDataIfFreshInstall: storage check failed, skipping.', error);
     }
 }
 
