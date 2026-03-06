@@ -16,12 +16,14 @@ export function SettingsHeader({ topInset, displayName, email }: SettingsHeaderP
     const avatarSeed = displayName?.trim() || email?.trim();
     const avatarUri =
         isAppwriteConfigured && avatarSeed
-            ? appwriteAvatars.getInitials({
-                  name: avatarSeed,
-                  width: 150,
-                  height: 150,
-                  background: '375B6A',
-              })
+            ? appwriteAvatars
+                  .getInitials({
+                      name: avatarSeed,
+                      width: 150,
+                      height: 150,
+                      background: '375B6A',
+                  })
+                  .toString()
             : null;
 
     return (

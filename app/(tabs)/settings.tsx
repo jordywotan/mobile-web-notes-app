@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 import { ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -20,7 +21,7 @@ export default function SettingsScreen() {
     const appearanceLabel = themePreference === 'auto' ? 'System' : themePreference;
 
     return (
-        <View className="flex-1 bg-background-light">
+        <View className="flex-1 bg-background-light dark:bg-background-dark">
             <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 28 }}>
                 <SettingsHeader
                     displayName={user?.name ?? undefined}
@@ -63,7 +64,9 @@ export default function SettingsScreen() {
                     <Button label="Sign out" variant="primary" onPress={signOut} />
                 </View>
 
-                <Text className="px-lg text-center text-xs text-ink/30">App version: 1.0.0</Text>
+                <Text className="px-lg text-center text-xs text-ink/30">
+                    App version: {Constants.expoConfig?.version ?? '1.0.0'}
+                </Text>
             </ScrollView>
         </View>
     );

@@ -19,6 +19,7 @@ export default function LoginScreen() {
     const {
         control,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<LoginFormValues>({
         defaultValues: {
@@ -29,7 +30,11 @@ export default function LoginScreen() {
     });
 
     const onSubmit = async (values: LoginFormValues) => {
-        await signIn(values);
+        try {
+            await signIn(values);
+        } catch {
+            setError('root', { message: 'Incorrect email or password. Please try again.' });
+        }
     };
 
     return (
@@ -89,6 +94,10 @@ export default function LoginScreen() {
                             />
                         )}
                     />
+
+                    {errors.root?.message ? (
+                        <Text className="mb-sm text-sm text-danger">{errors.root.message}</Text>
+                    ) : null}
 
                     <Button
                         className="mt-sm"

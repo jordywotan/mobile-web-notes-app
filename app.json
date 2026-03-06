@@ -1,6 +1,6 @@
 {
     "expo": {
-        "name": "mobile-web-notes-app",
+        "name": "Quick Notes App",
         "slug": "mobile-web-notes-app",
         "scheme": "mobilewebnotesapp",
         "version": "1.0.0",
@@ -33,6 +33,6 @@
         "web": {
             "favicon": "./assets/favicon.png"
         },
-        "plugins": ["expo-router", "expo-dev-client"]
+        "plugins": ["expo-router", "expo-dev-client", "expo-secure-store"]
     }
 }

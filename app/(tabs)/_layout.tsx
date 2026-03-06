@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from 'expo-router';
-import { StatusBar } from 'react-native';
+import { setStatusBarStyle } from 'expo-status-bar';
 
 import { useAuthSession, useAuthStatus } from '@/hooks/useAuthStore';
 
@@ -26,7 +26,7 @@ export default function TabsLayout() {
                 options={{ title: 'Home' }}
                 listeners={{
                     focus: () => {
-                        StatusBar.setBarStyle('dark-content', true);
+                        setStatusBarStyle('dark');
                     },
                 }}
             />
@@ -35,7 +35,7 @@ export default function TabsLayout() {
                 options={{ title: 'Settings' }}
                 listeners={{
                     focus: () => {
-                        StatusBar.setBarStyle('light-content', true);
+                        setStatusBarStyle('light');
                     },
                 }}
             />

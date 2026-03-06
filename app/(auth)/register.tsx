@@ -20,6 +20,7 @@ export default function RegisterScreen() {
     const {
         control,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm<RegisterFormValues>({
         defaultValues: {
@@ -31,7 +32,11 @@ export default function RegisterScreen() {
     });
 
     const onSubmit = async (values: RegisterFormValues) => {
-        await signUp(values);
+        try {
+            await signUp(values);
+        } catch {
+            setError('root', { message: 'Could not create your account. Please try again.' });
+        }
     };
 
     return (
@@ -112,6 +117,10 @@ export default function RegisterScreen() {
                             />
                         )}
                     />
+
+                    {errors.root?.message ? (
+                        <Text className="mb-sm text-sm text-danger">{errors.root.message}</Text>
+                    ) : null}
 
                     <Button
                         className="mt-sm"

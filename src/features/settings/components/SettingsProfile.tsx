@@ -6,10 +6,14 @@ type SettingsProfileProps = {
 };
 
 export function SettingsProfile({ name, email }: SettingsProfileProps) {
+    if (!name && !email) {
+        return null;
+    }
+
     return (
         <View className="mb-sm mt-20 items-center px-lg">
-            <Text className="font-display text-xl font-bold text-ink">{name}</Text>
-            <Text className="mt-xs text-sm text-ink/45">{email}</Text>
+            {name ? <Text className="font-display text-xl font-bold text-ink">{name}</Text> : null}
+            {email ? <Text className="mt-xs text-sm text-ink/45">{email}</Text> : null}
         </View>
     );
 }

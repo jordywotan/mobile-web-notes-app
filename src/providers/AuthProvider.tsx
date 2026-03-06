@@ -26,13 +26,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const session = useAuthStore((state) => state.session);
     const user = useAuthStore((state) => state.user);
     const isLoading = useAuthStore((state) => state.isLoading);
-    const setSession = useAuthStore((state) => state.setSession);
-    const setUser = useAuthStore((state) => state.setUser);
-    const setIsLoading = useAuthStore((state) => state.setIsLoading);
-    const setIsBootstrapped = useAuthStore((state) => state.setIsBootstrapped);
-    const reset = useAuthStore((state) => state.reset);
 
     const bootstrapAuth = useCallback(async () => {
+        const { setIsLoading, setIsBootstrapped, setSession, setUser, reset } =
+            useAuthStore.getState();
         setIsLoading(true);
 
         try {
@@ -50,45 +47,42 @@ export function AuthProvider({ children }: PropsWithChildren) {
             setIsLoading(false);
             setIsBootstrapped(true);
         }
-    }, [reset, setIsBootstrapped, setIsLoading, setSession, setUser]);
+    }, []);
 
     useEffect(() => {
-        bootstrapAuth();
+        void bootstrapAuth().catch(console.error);
     }, [bootstrapAuth]);
 
-    const signIn = useCallback(
-        async (payload: SignInPayload) => {
-            setIsLoading(true);
+    const signIn = useCallback(async (payload: SignInPayload) => {
+        const { setIsLoading, setSession, setUser } = useAuthStore.getState();
+        setIsLoading(true);
 
-            try {
-                const nextSession = await authService.signIn(payload);
-                const nextUser = await authService.getCurrentUser();
-                setSession(nextSession);
-                setUser(nextUser);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [setIsLoading, setSession, setUser],
-    );
+        try {
+            const nextSession = await authService.signIn(payload);
+            const nextUser = await authService.getCurrentUser();
+            setSession(nextSession);
+            setUser(nextUser);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
-    const signUp = useCallback(
-        async (payload: SignUpPayload) => {
-            setIsLoading(true);
+    const signUp = useCallback(async (payload: SignUpPayload) => {
+        const { setIsLoading, setSession, setUser } = useAuthStore.getState();
+        setIsLoading(true);
 
-            try {
-                const nextSession = await authService.signUp(payload);
-                const nextUser = await authService.getCurrentUser();
-                setSession(nextSession);
-                setUser(nextUser);
-            } finally {
-                setIsLoading(false);
-            }
-        },
-        [setIsLoading, setSession, setUser],
-    );
+        try {
+            const nextSession = await authService.signUp(payload);
+            const nextUser = await authService.getCurrentUser();
+            setSession(nextSession);
+            setUser(nextUser);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     const signOut = useCallback(async () => {
+        const { setIsLoading, reset } = useAuthStore.getState();
         setIsLoading(true);
 
         try {
@@ -96,9 +90,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
             reset();
         } finally {
             setIsLoading(false);
-            setIsBootstrapped(true);
         }
-    }, [reset, setIsBootstrapped, setIsLoading]);
+    }, []);
 
     const value = useMemo<AuthContextValue>(
         () => ({
